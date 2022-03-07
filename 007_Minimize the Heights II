@@ -1,0 +1,62 @@
+class Solution {
+    
+    class Pair implements Comparable<Pair> {
+        int num;
+        int ind;
+        Pair(int a,int b) {
+            num=a;
+            ind=b;
+        }
+        public int compareTo(Pair obj) {
+            return this.num-obj.num;
+        }
+    }
+    
+    int getMinDiff(int[] arr, int n, int k) {
+        // code here
+        ArrayList<Pair> v=new ArrayList<>();
+        for(int i=0;i<n;i++) {
+            if(arr[i]-k>=0)
+                v.add(new Pair(arr[i]-k,i));
+            v.add(new Pair(arr[i]+k,i));
+        }
+        Collections.sort(v);
+        
+        int[] vis=new int[n];
+        int ele=0;
+        int left=0;
+        int right=0;
+        while(ele<n && right<v.size()) {
+            int ind=v.get(right).ind;
+            if(vis[ind]==0)
+                ele++;
+            vis[ind]++;
+            right++;
+        }
+        int ans=v.get(right-1).num-v.get(left).num;
+        
+        while(right<v.size()) {
+            int ind=v.get(left).ind;
+            if(vis[ind]==1)
+                ele--;
+            vis[ind]--;
+            left++;
+            
+            while(ele<n && right<v.size()) {
+                ind=v.get(right).ind;
+                if(vis[ind]==0)
+                    ele++;
+                vis[ind]++;
+                right++;
+            }
+            
+            if(ele==n) {
+                ans=Math.min(ans,v.get(right-1).num-v.get(left).num);
+            } else {
+                break;
+            }
+        }
+        return ans;
+        
+    }
+}
