@@ -1,0 +1,17 @@
+class Solution {
+    public int findDuplicate(int[] arr) {
+        int n=arr.length;
+        int max=n;
+        for(int i=0;i<n;i++) {
+            int ind=arr[i]%max;
+            arr[ind]+=max;
+        }
+        int res=-1;
+        for(int i=1;i<n;i++) {
+            if(arr[i]/max>=2)
+                res=i;
+            arr[i]=arr[i]%max;
+        }
+        return res;
+    }
+}
