@@ -1,0 +1,57 @@
+// Use modulo to store two variable at same index
+// and treat both arr1 and arr2 as your temporary 
+// array to store sorted elements 
+
+class Solution {
+
+    public void merge(int arr1[], int arr2[], int n, int m) {
+        // code here
+        int k=0,i=0,j=0,max=0;
+        for(int x:arr1)
+            max=Math.max(max,x);
+        for(int x:arr2)
+            max=Math.max(max,x);
+        max+=1;
+        while(i<n && j<m) {
+            int x=arr1[i]%max;
+            int y=arr2[j]%max;
+            if(x<=y) {
+                if(k<n)
+                    arr1[k]=max*x+(arr1[k]%max);
+                else
+                    arr2[k-n]=max*x+(arr2[k-n]%max);
+                k++; i++;
+            } else {
+                if(k<n)
+                    arr1[k]=max*y+(arr1[k]%max);
+                else
+                    arr2[k-n]=max*y+(arr2[k-n]%max);
+                k++; j++;
+            }
+        }
+        
+        while(i<n) {
+            int x=arr1[i]%max;
+            if(k<n)
+                arr1[k]=max*x+(arr1[k]%max);
+            else
+                arr2[k-n]=max*x+(arr2[k-n]%max);
+            k++; i++;
+        }
+        
+        while(j<m) {
+            int y=arr2[j]%max;
+            if(k<n)
+                arr1[k]=max*y+(arr1[k]%max);
+            else
+                arr2[k-n]=max*y+(arr2[k-n]%max);
+            k++; j++;
+        }
+        
+        for(i=0;i<n;i++)
+            arr1[i]/=max;
+        for(i=0;i<m;i++)
+            arr2[i]/=max;
+        
+    }
+}
