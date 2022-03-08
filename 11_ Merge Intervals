@@ -1,0 +1,31 @@
+class Solution {
+    class Pair {
+        int x;
+        int y;
+        Pair(int a,int b) {
+            x=a;
+            y=b;
+        }
+    }
+    public int[][] merge(int[][] arr) {
+        Arrays.sort(arr,(a,b) -> (a[0]-b[0]));
+        ArrayList<Pair> list=new ArrayList<>();
+        int x=arr[0][0],y=arr[0][1],ind=0;
+        for(int i=1;i<arr.length;i++) {
+            if(arr[i][0]<=y) {
+                y=Math.max(y,arr[i][1]);
+            } else {
+                list.add(new Pair(x,y));
+                x=arr[i][0]; y=arr[i][1];
+            }
+        }
+        list.add(new Pair(x,y));
+        int[][] res=new int[list.size()][2];
+        for(Pair p:list) {
+            res[ind][0]=p.x;
+            res[ind][1]=p.y;
+            ind++;
+        }
+        return res;
+    }
+}
