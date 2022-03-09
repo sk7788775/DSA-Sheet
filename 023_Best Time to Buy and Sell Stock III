@@ -1,0 +1,32 @@
+class Solution {
+    
+    int[][][] arr;
+    public int maxProfit(int[] prices) {
+        // arg2=index, arg3=transaction ,arg4=bought or not
+        int n=prices.length;
+        arr=new int[2][3][n];
+        for(int[][] a:arr)
+            for(int[] b:a)
+                Arrays.fill(b,-1);
+        return solve(prices,0,2,0);
+    }
+    
+    int solve(int[] prices,int pos,int t,int bought) {
+        if(pos>=prices.length || t==0)
+            return 0;
+        if(arr[bought][t][pos]!=-1)
+            return arr[bought][t][pos];
+        // For skiping
+        int res=solve(prices,pos+1,t,bought);
+        // If bought then sell or buy if not bought yet
+        // or bought and sold then buy again until transaction
+        // reaches 0
+        if(bought==1)
+            res=Math.max(res,solve(prices,pos+1,t-1,0)+prices[pos]);
+        else
+            res=Math.max(res,solve(prices,pos+1,t,1)-prices[pos]);
+        arr[bought][t][pos]=res;
+        return res;
+    }
+    
+}
