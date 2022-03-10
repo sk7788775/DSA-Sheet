@@ -1,0 +1,27 @@
+class Solution{
+    
+    // arr: input array
+    // n: size of array
+    // Function to find the trapped water between the blocks.
+    static int trappingWater(int arr[], int n) { 
+        
+        // Your code here
+        int[] lmax=new int[n];
+        int[] rmax=new int[n];
+        int temp1=arr[0];
+        for(int i=0;i<n;i++) {
+            temp1=Math.max(temp1,arr[i]);
+            lmax[i]=temp1;
+        }
+        int temp2=arr[n-1];
+        for(int i=n-1;i>=0;i--) {
+            temp2=Math.max(temp2,arr[i]);
+            rmax[i]=temp2;
+        }
+        int res=0;
+        for(int i=0;i<n;i++) {
+            res+=(Math.min(lmax[i],rmax[i])-arr[i]);
+        }
+        return res;
+    } 
+}
