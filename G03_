@@ -1,0 +1,83 @@
+// BFS SOLUTION
+
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    class Node {
+        int num;
+        int par;
+        Node(int a,int b) {
+            num=a;
+            par=b;
+        }
+    }
+    
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean[] vis=new boolean[V];
+        for(int i=0;i<V;i++) {
+            if(!vis[i] && solve(adj,i,vis))
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean solve(ArrayList<ArrayList<Integer>> adj,int i,boolean[] vis) {
+        ArrayDeque<Node> ad=new ArrayDeque<>();
+        ad.add(new Node(i,-1));
+        vis[i]=true;
+        while(!ad.isEmpty()) {
+            Node node=ad.remove();
+            int u=node.num;
+            int p=node.par;
+            for(int v:adj.get(u)) {
+                if(!vis[v]) {
+                    ad.add(new Node(v,u));
+                    vis[v]=true;
+                } else if(v!=p) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+// DFS SOLUTION
+
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    class Node {
+        int num;
+        int par;
+        Node(int a,int b) {
+            num=a;
+            par=b;
+        }
+    }
+    
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean[] vis=new boolean[V];
+        for(int i=0;i<V;i++) {
+            if(!vis[i] && solve(adj,new Node(i,-1),vis)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean solve(ArrayList<ArrayList<Integer>> adj,Node node,boolean[] vis) {
+        int u=node.num;
+        int p=node.par;
+        vis[u]=true;
+        for(int v:adj.get(u)) {
+            if(!vis[v]) {
+                if(solve(adj,new Node(v,u),vis))
+                    return true;
+            } else if(v!=p) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
