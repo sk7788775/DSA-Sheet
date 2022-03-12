@@ -1,0 +1,45 @@
+class Solution {
+    
+    class Node implements Comparable<Node> {
+        char ch;
+        int data;
+        Node left;
+        Node right;
+        Node(char a,int b,Node l,Node r) {
+            ch=a;
+            data=b;
+            left=l;
+            right=r;
+        }
+        public int compareTo(Node obj) {
+            return (this.data!=obj.data)?this.data-obj.data:1;
+        }
+    }
+    
+    public ArrayList<String> huffmanCodes(String str, int arr[], int n)
+    {
+        // Code here
+        ArrayList<String> res=new ArrayList<>();
+        PriorityQueue<Node> pq=new PriorityQueue<>();
+        for(int i=0;i<n;i++)
+            pq.add(new Node(str.charAt(i),arr[i],null,null));
+        while(pq.size()>1) {
+            Node node1=pq.poll();
+            Node node2=pq.poll();
+            Node node=new Node('$',node1.data+node2.data,node1,node2);
+            pq.add(node);
+        }
+        preOrder(pq.peek(),"",res);
+        return res;
+    }
+    
+    void preOrder(Node root,String str,ArrayList<String> res) {
+        if(root.left==null && root.right==null && root.ch!='$') {
+            res.add(str);
+            return;
+        }
+        preOrder(root.left,str+"0",res);
+        preOrder(root.right,str+"1",res);
+    }
+    
+}
